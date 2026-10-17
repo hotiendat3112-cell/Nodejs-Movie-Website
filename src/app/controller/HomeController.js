@@ -5,7 +5,7 @@ const Movie = require("../models/Movie");
 const path = require("path");
 const fs = require("fs").promises;
 
-// Khai báo sẵn headers User-Agent để tái sử dụng cho các lệnh fetch
+// Khai báo sẵn headers User-Agent để tái sử dụng cho các lệnh fetch tránh lỗi 403
 const fetchHeaders = {
     headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
@@ -18,33 +18,40 @@ class HomeController {
     try {
       const data = await fs.readFile(filePath, "utf8");
       const banner = JSON.parse(data).backdrops;
-      const bannerRandom = banner[Math.floor(Math.random() * banner.length)];
-      return bannerRandom;
+      if (banner && banner.length > 0) {
+        return banner[Math.floor(Math.random() * banner.length)];
+      }
+      return {};
     } catch (error) {
-      console.error("Error fetching banner:", error);
-      return [];
+      console.error("Error fetching banner:", error.message);
+      return {};
     }
   }
 
-  static index(req, res) {
-    Promise.all([
-      PhimmoiController.phimmoi(),
-      PhimleController.phimle(),
-      PhimboController.phimbo(),
-      HomeController.banner(),
-    ])
-      .then(([movies, odd_Movies, seri_Movies, banner_Movies]) => {
-        res.render("home", { movies, odd_Movies, seri_Movies, banner_Movies });
-      })
-      .catch((error) => {
-        console.error("Error fetching movies:", error);
-        res.render("home", {
-          movies: [],
-          odd_Movies: [],
-          seri_Movies: [],
-          banner_Movies: [],
-        });
+  static async index(req, res) {
+    try {
+      const [movies, odd_Movies, seri_Movies, banner_Movies] = await Promise.all([
+        PhimmoiController.phimmoi().catch(() => []),
+        PhimleController.phimle().catch(() => []),
+        PhimboController.phimbo().catch(() => []),
+        HomeController.banner().catch(() => ({})),
+      ]);
+
+      res.render("home", { 
+        movies: Array.isArray(movies) ? movies : [], 
+        odd_Movies: Array.isArray(odd_Movies) ? odd_Movies : [], 
+        seri_Movies: Array.isArray(seri_Movies) ? seri_Movies : [], 
+        banner_Movies: banner_Movies || {} 
       });
+    } catch (error) {
+      console.error("Error loading home page:", error.message);
+      res.render("home", {
+        movies: [],
+        odd_Movies: [],
+        seri_Movies: [],
+        banner_Movies: {},
+      });
+    }
   }
 
   // Phương thức xem chi tiết phim (Hỗ trợ cả MongoDB cục bộ và API ngoài)
@@ -53,9 +60,9 @@ class HomeController {
 
     try {
       const [phimmoi, phimle, phimbo] = await Promise.all([
-        PhimmoiController.phimmoi(),
-        PhimleController.phimle(),
-        PhimboController.phimbo(),
+        PhimmoiController.phimmoi().catch(() => []),
+        PhimleController.phimle().catch(() => []),
+        PhimboController.phimbo().catch(() => []),
       ]);
 
       // 1. Kiểm tra xem slug có phải là ID của MongoDB cục bộ không (24 ký tự hex)
@@ -65,7 +72,6 @@ class HomeController {
           const episodes = localMovie.episodes || [];
           const currentEpisode = episodes.length > 0 ? episodes[0] : null;
 
-          // Chuẩn hóa dữ liệu sang cấu trúc tương thích với view chi tiết
           const normalizedMovie = {
             id: localMovie._id,
             name: localMovie.title,
@@ -104,11 +110,12 @@ class HomeController {
       }
 
       const data = await response.json();
-      if (data.status === "success") {
+      if (data.status === "success" && data.movie) {
         const movie = data.movie;
-        const moviePractice = movie.episodes[0].items.map((item) => ({
+        const episodesList = movie.episodes && movie.episodes.length > 0 ? movie.episodes[0].items : [];
+        const moviePractice = episodesList.map((item) => ({
           ...item,
-          isEpisode: item.slug.startsWith("tap-"),
+          isEpisode: item.slug ? item.slug.startsWith("tap-") : false,
         }));
 
         res.render("movie/details", {
@@ -128,20 +135,20 @@ class HomeController {
       }
     } catch (error) {
       console.error("Lỗi chi tiết phim:", error.message);
-      res.render("movie/details", { movie: null });
+      res.render("movie/details", { movie: null, phimmoi: [], phimle: [], phimbo: [] });
     }
   }
 
   // Phương thức xem tập phim cụ thể
   static async tap(req, res) {
     const slug = req.params.slug;
-    const tap = req.params.name; // Có thể là id tập hoặc slug tập
+    const tap = req.params.name;
 
     try {
       const [phimmoi, phimle, phimbo] = await Promise.all([
-        PhimmoiController.phimmoi(),
-        PhimleController.phimle(),
-        PhimboController.phimbo(),
+        PhimmoiController.phimmoi().catch(() => []),
+        PhimleController.phimle().catch(() => []),
+        PhimboController.phimbo().catch(() => []),
       ]);
 
       // 1. Xử lý phim cục bộ MongoDB
@@ -149,7 +156,6 @@ class HomeController {
         const localMovie = await Movie.findById(slug).lean();
         if (localMovie) {
           const episodes = localMovie.episodes || [];
-          // Tìm tập theo số tập hoặc slug
           const currentEpisode = episodes.find(
             ep => `tap-${ep.episodeNumber}` === tap || ep.episodeNumber.toString() === tap
           ) || episodes[0];
@@ -190,11 +196,12 @@ class HomeController {
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
       const data = await response.json();
-      if (data.status === "success") {
+      if (data.status === "success" && data.movie) {
         const movie = data.movie;
-        const episodes = movie.episodes[0].items.map((item) => ({
+        const episodesList = movie.episodes && movie.episodes.length > 0 ? movie.episodes[0].items : [];
+        const episodes = episodesList.map((item) => ({
           ...item,
-          isEpisode: item.slug.startsWith("tap-"),
+          isEpisode: item.slug ? item.slug.startsWith("tap-") : false,
         }));
 
         const currentEpisode = episodes.find((item) => item.slug === tap) || episodes[0];
@@ -216,7 +223,7 @@ class HomeController {
       }
     } catch (error) {
       console.error("Lỗi xem tập phim:", error.message);
-      res.render("movie/details", { movie: null, phimmoi, phimle, phimbo });
+      res.render("movie/details", { movie: null, phimmoi: [], phimle: [], phimbo: [] });
     }
   }
 
@@ -241,7 +248,7 @@ class HomeController {
       const externalApiUrl = `https://phim.nguonc.com/api/films/search?keyword=${apiKey}`;
 
       const [localMovies, externalResult, phimmoi, phimle, phimbo] = await Promise.all([
-        Movie.find(mongoQuery).lean(),
+        Movie.find(mongoQuery).lean().catch(() => []),
         
         fetch(externalApiUrl, fetchHeaders)
           .then(async (response) => {
@@ -259,7 +266,6 @@ class HomeController {
         PhimboController.phimbo().catch(() => []),
       ]);
 
-      // Chuẩn hóa dữ liệu phim cục bộ để khớp template hiển thị chung
       const formattedLocalMovies = localMovies.map(movie => ({
         _id: movie._id,
         slug: movie._id,
@@ -271,7 +277,7 @@ class HomeController {
         isLocal: true
       }));
 
-      const externalMovies = (externalResult.status === "success" && externalResult.items)
+      const externalMovies = (externalResult && externalResult.status === "success" && externalResult.items)
         ? externalResult.items
         : [];
 
@@ -292,57 +298,64 @@ class HomeController {
     }
   }
 
-  static theloai(req, res) {
+  // Phương thức xem theo thể loại
+  static async theloai(req, res) {
     const slug = req.params.slug;
     const page = parseInt(req.query.page) || 1;
     const itemsPerPage = 18;
     const maxPagesToShow = 3;
 
-    const apiUrl = `https://phim.nguonc.com/api/films/the-loai/${slug}?page=${page}`;
-    Promise.all([
-      fetch(apiUrl, fetchHeaders),
-      fetch(
-        `https://phim.nguonc.com/api/films/the-loai/${slug}?page=${page + 1}`,
-        fetchHeaders
-      ),
-    ])
-      .then((responses) => {
-        responses.forEach((response) => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-        });
+    const apiUrl1 = `https://phim.nguonc.com/api/films/the-loai/${slug}?page=${page}`;
+    const apiUrl2 = `https://phim.nguonc.com/api/films/the-loai/${slug}?page=${page + 1}`;
 
-        return Promise.all(responses.map((response) => response.json()));
-      })
-      
-      .then((dataArray) => {
-        const data1 = dataArray[0];
-        const data2 = dataArray[1];
+    try {
+      const [res1, res2, phimmoi, phimle, phimbo] = await Promise.all([
+        fetch(apiUrl1, fetchHeaders).catch(() => null),
+        fetch(apiUrl2, fetchHeaders).catch(() => null),
+        PhimmoiController.phimmoi().catch(() => []),
+        PhimleController.phimle().catch(() => []),
+        PhimboController.phimbo().catch(() => []),
+      ]);
 
-        const allMovies = [...(data1.items || []), ...(data2.items || [])];
+      let data1 = { items: [] };
+      let data2 = { items: [] };
 
-        const totalPages = page + 1;
-        const pagination = [];
+      if (res1 && res1.ok) {
+        data1 = await res1.json().catch(() => ({ items: [] }));
+      }
+      if (res2 && res2.ok) {
+        data2 = await res2.json().catch(() => ({ items: [] }));
+      }
 
-        const startPage = Math.max(1, page - Math.floor(maxPagesToShow / 2));
-        const endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+      const allMovies = [...(data1.items || []), ...(data2.items || [])];
+      const totalPages = page + 1;
+      const pagination = [];
 
-        for (let i = startPage; i <= endPage; i++) {
-          pagination.push(i);
-        }
+      const startPage = Math.max(1, page - Math.floor(maxPagesToShow / 2));
+      const endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
 
-        res.render("movie/listmovie", {
-          movies: allMovies.slice(0, itemsPerPage),
-          currentPage: page,
-          totalPages: totalPages,
-          pagination: pagination,
-        });
-      })
-      .catch((error) => {
-        console.error("Network error:", error.message);
-        res.render("movie/listmovie", { movies: null });
+      for (let i = startPage; i <= endPage; i++) {
+        pagination.push(i);
+      }
+
+      res.render("movie/listmovie", {
+        movies: allMovies.slice(0, itemsPerPage),
+        currentPage: page,
+        totalPages: totalPages,
+        pagination: pagination,
+        phimmoi,
+        phimle,
+        phimbo,
       });
+    } catch (error) {
+      console.error("Network error:", error.message);
+      res.render("movie/listmovie", { 
+        movies: [], 
+        currentPage: page, 
+        totalPages: 0, 
+        pagination: [] 
+      });
+    }
   }
 }
 
