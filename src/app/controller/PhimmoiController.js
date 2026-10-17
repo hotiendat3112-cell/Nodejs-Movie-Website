@@ -34,10 +34,9 @@ class PhimmoiController {
     }
 
     static phimmoi(page = 1) {
+        // Sửa lại URL đúng chuẩn của API nguồn
         const apiUrl = `https://phim.nguonc.com/api/films/phim-moi-cap-nhat?page=${page}`;
         
-        
-        // Thêm headers User-Agent để giả lập trình duyệt, tránh bị chặn 403 từ server nguồn
         return fetch(apiUrl, {
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
@@ -50,7 +49,8 @@ class PhimmoiController {
                 return response.json();
             })
             .then((data) => {
-                if (data.status === "success") {
+                // API phim nguồn thường trả về danh sách trong thuộc tính `items` hoặc `data.items`
+                if (data.status === "success" || data.items) {
                     return data.items || [];
                 } else {
                     console.error("Error fetching data:", data.message);
