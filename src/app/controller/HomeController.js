@@ -5,6 +5,13 @@ const Movie = require("../models/Movie");
 const path = require("path");
 const fs = require("fs").promises;
 
+// Khai báo sẵn headers User-Agent để tái sử dụng cho các lệnh fetch
+const fetchHeaders = {
+    headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    }
+};
+
 class HomeController {
   static async banner() {
     const filePath = path.join(__dirname, "../../resources/data/banner.json");
@@ -91,7 +98,7 @@ class HomeController {
 
       // 2. Nếu không phải MongoDB cục bộ, gọi API ngoài
       const apiUrl = `https://phim.nguonc.com/api/film/${slug}`;
-      const response = await fetch(apiUrl);
+      const response = await fetch(apiUrl, fetchHeaders);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -179,7 +186,7 @@ class HomeController {
 
       // 2. Xử lý API ngoài
       const apiUrl = `https://phim.nguonc.com/api/film/${slug}`;
-      const response = await fetch(apiUrl);
+      const response = await fetch(apiUrl, fetchHeaders);
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
       const data = await response.json();
@@ -236,7 +243,7 @@ class HomeController {
       const [localMovies, externalResult, phimmoi, phimle, phimbo] = await Promise.all([
         Movie.find(mongoQuery).lean(),
         
-        fetch(externalApiUrl)
+        fetch(externalApiUrl, fetchHeaders)
           .then(async (response) => {
             if (!response.ok) return { status: "error", items: [] };
             const contentType = response.headers.get("Content-Type");
@@ -255,7 +262,7 @@ class HomeController {
       // Chuẩn hóa dữ liệu phim cục bộ để khớp template hiển thị chung
       const formattedLocalMovies = localMovies.map(movie => ({
         _id: movie._id,
-        slug: movie._id, // Gắn ID làm slug để khi click chuyển hướng đúng route chi tiết
+        slug: movie._id,
         name: movie.title,
         title: movie.title,
         thumb_url: movie.posterUrl,
@@ -293,9 +300,10 @@ class HomeController {
 
     const apiUrl = `https://phim.nguonc.com/api/films/the-loai/${slug}?page=${page}`;
     Promise.all([
-      fetch(apiUrl),
+      fetch(apiUrl, fetchHeaders),
       fetch(
-        `https://phim.nguonc.com/api/films/the-loai/${slug}?page=${page + 1}`
+        `https://phim.nguonc.com/api/films/the-loai/${slug}?page=${page + 1}`,
+        fetchHeaders
       ),
     ])
       .then((responses) => {
