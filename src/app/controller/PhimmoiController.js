@@ -36,6 +36,7 @@ class PhimmoiController {
     static phimmoi(page = 1) {
         const apiUrl = `https://phim.nguonc.com/api/films/phim-moi-cap-nhat?page=${page}`;
         
+        
         // Thêm headers User-Agent để giả lập trình duyệt, tránh bị chặn 403 từ server nguồn
         return fetch(apiUrl, {
             headers: {

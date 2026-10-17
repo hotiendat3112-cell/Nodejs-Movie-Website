@@ -315,6 +315,7 @@ class HomeController {
 
         return Promise.all(responses.map((response) => response.json()));
       })
+      
       .then((dataArray) => {
         const data1 = dataArray[0];
         const data2 = dataArray[1];
