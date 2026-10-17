@@ -11,7 +11,7 @@ class PhimmoiController {
                 const displayedMovies = allMovies.slice(0, itemsPerPage); 
 
                 const totalItems = moviesPage1.length + moviesPage2.length;
-                const totalPages = page+1;
+                const totalPages = page + 1;
                 const pagination = [];
                 const startPage = Math.max(1, page - Math.floor(maxPagesToShow / 2));
                 const endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
@@ -32,9 +32,16 @@ class PhimmoiController {
                 res.render("movie/listmovie", { movies: [], currentPage: page, totalPages: 0, pagination: [] });
             });
     }
-static phimmoi(page = 1) {
+
+    static phimmoi(page = 1) {
         const apiUrl = `https://phim.nguonc.com/api/films/phim-moi-cap-nhat?page=${page}`;
-        return fetch(apiUrl)
+        
+        // Thêm headers User-Agent để giả lập trình duyệt, tránh bị chặn 403 từ server nguồn
+        return fetch(apiUrl, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+            }
+        })
             .then((response) => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
