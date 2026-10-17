@@ -1,0 +1,125 @@
+<div class="app_main">
+  <!-- Khung phát Video đã sửa CSS chống bị cắt đôi -->
+  <div class="main__screen-container" style="position: relative; width: 100%; padding-top: 56.25%; background: #000; overflow: hidden; border-radius: 8px;">
+    {{#if isLocal}}
+      {{#if currentEpisode.videoUrl}}
+        <video 
+          controls 
+          autoplay 
+          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;"
+        >
+          <source src="{{currentEpisode.videoUrl}}" type="video/mp4">
+          Trình duyệt của bạn không hỗ trợ thẻ video.
+        </video>
+      {{else}}
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #fff;">
+          <p class="m-0 fs-5">⚠️ Chưa có tập phim hoặc đường dẫn video bị trống.</p>
+        </div>
+      {{/if}}
+    {{else}}
+      <iframe 
+        src="{{movieEmbed}}" 
+        frameborder="0" 
+        allowfullscreen 
+        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
+      ></iframe>
+    {{/if}}
+  </div>
+
+  <!-- Phần Mô tả Phim bên dưới (Giữ nguyên) -->
+  <div class="main__description-container">
+    <div class="img-box">
+      <img src="{{#if movie.posterUrl}}{{movie.posterUrl}}{{else}}{{movie.thumb_url}}{{/if}}" alt="{{movie.name}}">
+    </div>
+    <div class="content-box">
+      <div class="content-heading">
+        <h3 class="title">{{#if movie.title}}{{movie.title}}{{else}}{{movie.name}}{{/if}}</h3>
+        <button class="button">
+          <i class="fa-solid fa-plus"></i>
+          <span>Thêm Vào Danh Sách</span>
+        </button>
+      </div>
+      <div class="content-base-infor">
+        {{#unless isLocal}}
+          <div class="base-infor">
+            <p>{{movieNation.3.list.0.name}}</p>
+          </div>
+          {{#each movieNation.1.list}}
+          <div class="base-infor">
+            <p>{{this.name}}</p>
+          </div>
+          {{/each}}
+        {{else}}
+          <div class="base-infor">
+            <p>{{movie.category}}</p>
+          </div>
+        {{/unless}}
+        <div class="time">
+          <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path>
+            <path d="M13 7h-2v5.414l3.293 3.293 1.414-1.414L13 11.586z"></path>
+          </svg>
+          <p>{{#if movie.time}}{{movie.time}}{{else}}Đang Cập Nhật{{/if}}</p>
+        </div>
+        <div class="view">
+          <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="256" cy="256" r="64"></circle>
+            <path d="M394.82 141.18C351.1 111.2 304.31 96 255.76 96c-43.69 0-86.28 13-126.59 38.48C88.52 160.23 48.67 207 16 256c26.42 44 62.56 89.24 100.2 115.18C159.38 400.92 206.33 416 255.76 416c49 0 95.85-15.07 139.3-44.79C433.31 345 469.71 299.82 496 256c-26.38-43.43-62.9-88.56-101.18-114.82zM256 352a96 96 0 1 1 96-96 96.11 96.11 0 0 1-96 96z"></path>
+          </svg>
+          <p>123456</p>
+        </div>
+      </div>
+      <div class="content-description">
+        <p>{{#if movie.description}}{{movie.description}}{{else}}Đang cập nhật nội dung...{{/if}}</p>
+      </div>
+      <div class="content-details">
+        <div class="item">
+          <p>Quốc Gia :</p>
+          <span>{{#unless isLocal}}{{movieNation.4.list.0.name}}{{else}}Việt Nam / Khác{{/unless}}</span>
+        </div>
+        <div class="item">
+          <p>Thể Loại :</p>
+          {{#unless isLocal}}
+            {{#each movieNation.2.list}}
+            <span>{{this.name}},</span>
+            {{/each}}
+          {{else}}
+            <span>{{movie.category}}</span>
+          {{/unless}}
+        </div>
+        <div class="item">
+          <p>Đạo Diễn :</p>
+          <span>Đang cập nhật</span>
+        </div>
+        <div class="item">
+          <p>Diễn Viên :</p>
+          <span>{{#if movie.cast}}{{movie.cast}}{{else}}Đang Cập Nhật{{/if}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Danh sách tập phim -->
+  <div class="main__seri-practice">
+    <span>Tập :</span>
+    <div class="seri-practice">
+      {{#unless isLocal}}
+        {{#each moviePractice}}
+        <div class="seri-practice-card">
+          <div class="name">
+            <a href="/phim/{{../movie.slug}}/{{this.slug}}">{{this.name}}</a>
+          </div>
+        </div>
+        {{/each}}
+      {{else}}
+        {{#each moviePractice}}
+        <div class="seri-practice-card">
+          <div class="name">
+            <a href="/phim/{{../movie.id}}/tap-{{this.episodeNumber}}">Tập {{this.episodeNumber}}</a>
+          </div>
+        </div>
+        {{/each}}
+      {{/unless}}
+    </div>
+  </div>
+</div>

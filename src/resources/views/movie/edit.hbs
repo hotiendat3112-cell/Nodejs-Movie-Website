@@ -1,0 +1,81 @@
+<div class="container my-5 text-white">
+    <h2 class="text-danger mb-4">Chỉnh sửa phim</h2>
+
+    <form action="/admin/movies/{{movie._id}}/update" method="POST" class="bg-dark p-4 rounded border border-secondary shadow">
+        <div class="mb-3">
+            <label for="title" class="form-label">Tên phim</label>
+            <input
+                type="text"
+                class="form-control bg-secondary text-white border-0"
+                id="title"
+                name="title"
+                value="{{movie.title}}"
+                required
+            >
+        </div>
+
+        <div class="mb-3">
+            <label for="category" class="form-label">Thể loại</label>
+            <input
+                type="text"
+                class="form-control bg-secondary text-white border-0"
+                id="category"
+                name="category"
+                value="{{movie.category}}"
+                placeholder="Ví dụ: Hành động, Tình cảm"
+            >
+        </div>
+
+        <!-- Bổ sung trường nhập URL ảnh poster -->
+        <div class="mb-3">
+            <label for="posterUrl" class="form-label">Ảnh poster (đường dẫn)</label>
+            <input
+                type="text"
+                class="form-control bg-secondary text-white border-0"
+                id="posterUrl"
+                name="posterUrl"
+                value="{{movie.posterUrl}}"
+                placeholder="Nhập URL ảnh poster (ví dụ từ ImgBB)"
+            >
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Mô tả phim</label>
+            <textarea
+                name="description"
+                class="form-control bg-secondary text-white border-0"
+                id="description"
+                rows="4"
+                placeholder="Nhập nội dung phim"
+            >{{movie.description}}</textarea>
+        </div>
+
+        <h4 class="mt-4 mb-3">Các tập phim hiện có</h4>
+
+        {{#if movie.episodes.length}}
+            {{#each movie.episodes}}
+                <div class="card bg-secondary text-white p-3 mb-3 border-0">
+                    <p class="mb-2">
+                        <strong>Tập {{this.episodeNumber}}</strong>
+                    </p>
+
+                    <p class="text-break mb-0 text-light">
+                        Đường dẫn video: {{this.videoUrl}}
+                    </p>
+                </div>
+            {{/each}}
+        {{else}}
+            <p class="text-muted">Phim chưa có tập nào.</p>
+        {{/if}}
+
+        <div class="d-flex justify-content-between mt-4">
+            <button type="submit" class="btn btn-danger px-4">
+                Lưu thay đổi
+            </button>
+
+            <a href="/admin" class="btn btn-secondary">
+                Quay lại
+            </a>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,38 @@
+<div class="container my-5 text-white">
+    <h2 class="text-danger mb-4">Thêm tập phim cho: {{movie.title}}</h2>
+
+    <form action="/admin/movies/{{movie._id}}/add-episode" method="POST" class="bg-dark p-4 rounded border border-secondary shadow">
+        <div class="mb-3">
+            <label for="episodeNumber" class="form-label">Tập số</label>
+            <input
+                type="number"
+                class="form-control bg-secondary text-white border-0"
+                id="episodeNumber"
+                name="episodeNumber"
+                required
+                placeholder="Nhập số tập (Ví dụ: 1, 2, 3...)"
+            >
+        </div>
+
+        <div class="mb-3">
+            <label for="videoUrl" class="form-label">Link Video (m3u8 / mp4 / embed)</label>
+            <input
+                type="text"
+                class="form-control bg-secondary text-white border-0"
+                id="videoUrl"
+                name="videoUrl"
+                required
+                placeholder="Dán URL video hoặc link m3u8 vào đây"
+            >
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <button type="submit" class="btn btn-danger px-4">
+                Thêm tập
+            </button>
+            <a href="/admin" class="btn btn-secondary">
+                Quay lại Admin
+            </a>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,36 @@
+{
+    "backdrops": [
+        {
+            "id": 1,
+            "slug": "one-piece-film-red",
+            "name": "One Piece Film: Red",
+            "description": "Bối cảnh One Piece Film Red diễn ra ở hòn đảo âm nhạc Elegia, nơi diva nổi tiếng bậc nhất thế giới tên Uta thực hiện buổi biểu diễn trực tiếp đầu tiên trước công chúng. Uta đứng trên sân khấu với một ước mơ giản dị rằng  “Âm nhạc của tôi sẽ khiến cho thế giới hạnh phúc”. Đằng sau hình ảnh cô ca sĩ sở hữu giọng hát được đánh giá “Ở đẳng cấp hoàn toàn khác”, là một thân thế vô cùng bí ẩn được che giấu. Băng hải tặc Mũ Rơm và các fan khác của Uta từ nhiều thế lực khác nhau như hải tặc lẫn hải quân đều đã cùng tề tựu về buổi biểu diễn này. Biến cố bắt đầu ngay khi sự thật kinh hoàng được tiết lộ rằng Uta chính là “con gái của Shanks”. Luffy và Uta lần đầu tiên hội ngộ sau lần gặp gỡ vào 12 năm trước tại Làng Foosha.",
+            "logo_url": "./img/banner/one_piece_film_red/logo.png",
+            "video_url": "./img/banner/one_piece_film_red/one_piece_film_red.mp4"
+        },
+        {
+            "id": 2,
+            "slug": "ten-cau-la-gi",
+            "name": "Your Name",
+            "description": "Mitsuha – một nữ sinh sống tại vùng quê Nhật Bản, chán ngán cuộc sống hiện tại và luôn mong được lên Tokyo sống. Taki – một cậu nam sinh ở Tokyo, làm thêm tại một nhà hàng Ý sau giờ học, thích vẽ vời và quan tâm đến ngành kiến trúc. Cả hai bắt đầu có những giấc mơ kỳ lạ kể từ khi ngôi sao chổi Tiamat huyền thoại xuất hiện trên bầu trời. Trong mơ, Mitsuha mơ thành một cậu nam sinh ở Tokyo còn Taki mơ mình là một cô nữ sinh ở vùng quê Nhật Bản. Và họ nhanh chóng nhận ra mình đã bị hoán đổi cơ thể. Để tránh những rắc rối, họ để lại cho nhau những lời nhắn, những quy định yêu cầu người kia không được làm gì. Mọi việc cứ thế trôi qua, cho đến buổi tối khi ngôi sao chổi đi qua và tách ra một phần rơi xuống Nhật Bản, cũng từ đó Taki phát hiện cậu và Mitsuha không còn hoán đổi cho nhau nữa. Dựa vào những gì nhớ được khi còn trong hình dáng Mitsuha, Taki vẽ lại bức tranh vùng quê nơi Mitsuha sinh sống. Cậu cùng 2 người bạn Tsukasa và Okudera lên đường đi tìm đến giấc mơ của mình.",
+            "logo_url": "./img/banner/your_name/Your_name_movie_logo.png",
+            "video_url": "./img/banner/your_name/your_name.mp4"
+        },
+        {
+            "id": 3,
+            "slug": "chu-thuat-hoi-chien-0",
+            "name":"Chú Thật Hồi Chiến Movie 0",
+            "description":"Itadori Yuji là một học sinh năm nhất cấp ba đang sống tại Sendai cùng với ông nội mình. Dù mang năng lực thể chất phi thường, cậu lại chọn tham gia câu lạc bộ nghiên cứu tâm linh để có thể rời trường lúc 5 giờ chiều, đến chăm sóc cho ông mình trong bệnh viện, người sau này đã qua đời tại đó. Tại trường học, Yuji đã nhặt được một chiếc bùa trừ tà mà không hề hay biết và đưa nó cho các anh chị trong câu lạc bộ. Sau đó, cậu gặp chú thuật sư Fushiguro Megumi, người đến thu hồi lại chiếc bùa nói trên - thực chất là ngón tay của Ryoumen Sukuna (両面宿儺; tạm dịch: Yêu quỷ hai mặt), một chú vật hết sức nguy hiểm - và hai người cùng tới trường ngăn các anh chị trong câu lạc bộ trước thông tin họ có ý định nhân buổi tối gỡ chiếc bùa ra tại trường. Yuji trợ giúp Megumi đánh lại các nguyền hồn, những sinh vật, sinh ra từ những cảm xúc tiêu cực của con người, đang tấn công các anh chị hòng chiếm lấy bùa chú, tăng sức mạnh. Yuji lấy lại được ngón tay của Sukuna, nhưng Megumi sắp bị các nguyền hồn đánh bại.",
+            "logo_url": "./img/banner/chu_thuat_hoi_chien/chu_thuat_hoi_chien.png",
+            "video_url": "./img/banner/chu_thuat_hoi_chien/chu_thuat_hoi_chien.mp4"
+        },
+        {
+            "id": 4,
+            "slug": "sword-art-online-ngoai-truyen-gun-gale-online-phan-2",
+            "name":"Sword Art Online Ngoại Truyện: Gun Gale Online (Phần 2)",
+            "description":"Vào năm 2022, trò chơi Virtual Reality Massively Multiplayer Online Role-Playing Game (Game nhập vai thực tại ảo trực tuyến nhiều người chơi - VRMMORPG) đầu tiên, Sword Art Online (SAO), được ra mắt. Nhờ Nerve Gear, một chiếc mũ thực tại ảo có thể tác động vào năm giác quan của người sử dụng thông qua não bộ của họ, người chơi có thể trải nghiệm và điều khiển nhân vật ảo trong game của họ bằng ý nghĩ Vào ngày 6 tháng 11 năm 2022, người chơi đăng nhập lần đầu tiên và phát hiện ra họ không thể đăng xuất. Sau đó họ được Kayaba Akihiko, người tạo ra SAO, cho họ biết rằng nếu muốn được tự do thì họ phải đến được tầng 100 của tòa tháp game (Aincrad) và đánh bại trùm cuối. Thế nhưng nếu nhân vật của họ chết trong game, họ cũng sẽ chết ngoài đời thực. Câu chuyện kể về Kirito, một người chơi trình độ cao quyết tâm phá đảo game. Khi trò chơi đã bắt đầu được hai năm, Kirito kết bạn với một người chơi nữ tên là Asuna và cậu đã yêu cô say đắm. Sau khi Kirito phát hiện ra nhân dạng của Kayaba trong SAO, cậu đối đầu và đánh bại hắn trong một trận đấu tay đôi, giải thoát chính mình và các người chơi khác khỏi trò chơi",
+            "logo_url": "./img/banner/sword_art_online_ngoai_truyen_gun_gale_online_phan_2/logo.png",
+            "video_url": "./img/banner/sword_art_online_ngoai_truyen_gun_gale_online_phan_2/sword_art_online_ngoai_truyen_gun_gale_online_phan_2.mp4"
+        }
+    ]
+}

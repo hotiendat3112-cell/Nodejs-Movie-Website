@@ -1,0 +1,117 @@
+<div class="container my-5 text-white">
+    <!-- Header trang Admin -->
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-secondary">
+        <div>
+            <h2 class="fw-bold text-danger m-0">🎬 Quản Lý Kho Phim</h2>
+            <p class="text-muted m-0 mt-1">Danh sách phim hiện có trong hệ thống</p>
+        </div>
+        <a href="/admin/movies/create" class="btn btn-danger fw-semibold px-4 py-2 shadow-sm">
+            <i class="fas fa-plus me-2"></i>+ Thêm Phim Mới
+        </a>
+    </div>
+
+    <!-- Thanh tìm kiếm phim -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <form action="/admin" method="GET" class="input-group">
+                <input type="text" name="search" class="form-control bg-dark text-white border-secondary shadow-none" placeholder="Nhập tên phim cần tìm để chỉnh sửa..." value="{{searchQuery}}">
+                <button class="btn btn-outline-danger px-4" type="submit">
+                    <i class="fas fa-search me-1"></i> Tìm kiếm
+                </button>
+                {{#if searchQuery}}
+                    <a href="/admin" class="btn btn-outline-secondary ms-2" title="Xóa tìm kiếm">
+                        <i class="fas fa-redo"></i>
+                    </a>
+                {{/if}}
+            </form>
+        </div>
+    </div>
+
+    <!-- Bảng danh sách phim -->
+    <div class="card bg-dark border-secondary shadow-lg rounded-3 overflow-hidden">
+        <div class="card-body p-0">
+            <table class="table table-dark table-hover table-striped align-middle mb-0 text-white">
+                <thead class="table-secondary text-uppercase fs-7 text-dark fw-bold">
+                    <tr>
+                        <th class="py-3 px-4" style="width: 5%;">#</th>
+                        <th class="py-3" style="width: 30%;">Tên Phim</th>
+                        <th class="py-3" style="width: 20%;">Thể Loại</th>
+                        <th class="py-3 text-center" style="width: 15%;">Số Tập</th>
+                        <th class="py-3 text-center" style="width: 30%;">Hành Động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#if movies.length}}
+                        {{#each movies}}
+                        <tr>
+                            <th scope="row" class="px-4">{{sum @index 1}}</th>
+                            <td class="fw-semibold text-light">{{this.title}}</td>
+                            <td>
+                                <span class="badge bg-danger bg-opacity-75">{{this.category}}</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge bg-info text-dark">{{this.episodes.length}} Tập</span>
+                            </td>
+                            <td class="text-center">
+                                <!-- Nút Sửa phim -->
+                                <a href="/admin/movies/{{this._id}}/edit" class="btn btn-warning btn-sm px-2 me-1 fw-semibold text-dark" title="Chỉnh sửa phim">
+                                    <i class="fas fa-edit"></i> Sửa
+                                </a>
+
+                                <!-- Nút mở Modal Thêm Tập -->
+                                <button class="btn btn-info btn-sm px-2 me-1 fw-semibold text-dark" data-bs-toggle="modal" data-bs-target="#addEpisodeModal-{{this._id}}" title="Thêm tập">
+                                    <i class="fas fa-plus-circle"></i> Thêm tập
+                                </button>
+
+                                <!-- Nút Xóa phim -->
+                                <form action="/admin/movies/{{this._id}}/delete" method="POST" class="d-inline">
+                                    <button type="submit" class="btn btn-danger btn-sm px-2 fw-semibold" onclick="return confirm('Bạn có chắc chắn muốn xóa bộ phim này không?')" title="Xóa phim">
+                                        <i class="fas fa-trash-alt"></i> Xóa
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+
+                        <!-- Modal Thêm Tập cho từng phim tương ứng -->
+                        <div class="modal fade text-dark" id="addEpisodeModal-{{this._id}}" tabindex="-1" aria-labelledby="addEpisodeModalLabel-{{this._id}}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content bg-dark text-white border border-secondary shadow-lg">
+                                    <div class="modal-header border-secondary">
+                                        <h5 class="modal-title text-danger fw-bold" id="addEpisodeModalLabel-{{this._id}}">Thêm tập mới cho: {{this.title}}</h5>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form action="/admin/movies/{{this._id}}/add-episode" method="POST">
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="episodeNumber-{{this._id}}" class="form-label text-light">Số tập</label>
+                                                <input type="number" class="form-control bg-secondary text-white border-0" id="episodeNumber-{{this._id}}" name="episodeNumber" required placeholder="Ví dụ: 1, 2, 3...">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="videoUrl-{{this._id}}" class="form-label text-light">Đường dẫn Video (URL / m3u8)</label>
+                                                <input type="text" class="form-control bg-secondary text-white border-0" id="videoUrl-{{this._id}}" name="videoUrl" required placeholder="Dán link video vào đây">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer border-secondary">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                            <button type="submit" class="btn btn-danger">Lưu tập phim</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Kết thúc Modal -->
+
+                        {{/each}}
+                    {{else}}
+                        <tr>
+                            <td colspan="5" class="text-center py-4 text-muted">
+                                <i class="fas fa-film fa-2x mb-2"></i>
+                                <p class="m-0">Không tìm thấy bộ phim nào trong cơ sở dữ liệu!</p>
+                            </td>
+                        </tr>
+                    {{/if}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+<div class="app_main">
+  <div class="grid wide container">
+    <div class="row main_container">
+      {{#each movies}}
+      {{!-- c-6  m-3 l-2 --}}
+      <div class="col c-6 m-3 l-2  moviesposter-wrapper">
+        <!-- Hỗ trợ cả slug từ API (slug) lẫn _id từ MongoDB cục bộ -->
+        <a href="/phim/{{#if this.slug}}{{this.slug}}{{else}}{{this._id}}{{/if}}">
+          <!-- Hỗ trợ cả thumb_url và posterUrl -->
+          <img src="{{#if this.thumb_url}}{{this.thumb_url}}{{else}}{{this.posterUrl}}{{/if}}" 
+               alt="{{#if this.name}}{{this.name}}{{else}}{{this.title}}{{/if}}" 
+               onerror="this.src='https://via.placeholder.com/300x450?text=No+Image'" />
+        </a>
+        <!-- Hỗ trợ cả name và title -->
+        <h3 class="moviesposter-title">{{#if this.name}}{{this.name}}{{else}}{{this.title}}{{/if}}</h3>
+        <div class="moviesposter-practice">{{current_episode}}</div>
+        <div class="moviesposter-HD">{{quality}}</div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="pagging__container">
+    <!-- Previous Page -->
+    <li class="pagging__container-items">
+      <a href="?page={{#if (gt currentPage 1)}}{{sub currentPage 1}}{{else}}1{{/if}}" class="pagging__container-link">
+        <i class="pagination-item__icon fa-solid fa-arrow-left"></i>
+      </a>
+    </li>
+
+    <!-- Page Numbers -->
+    {{#each pagination}}
+    <li class="pagging__container-items {{#if (eq this ../currentPage)}}active{{/if}}">
+      <a href="?page={{this}}" class="pagging__container-link">{{this}}</a>
+    </li>
+    {{/each}}
+
+    <!-- Next Page -->
+    <li class="pagging__container-items">
+      <a href="?page={{#if (lt currentPage totalPages)}}{{add currentPage 1}}{{else}}{{totalPages}}{{/if}}"
+        class="pagging__container-link">
+        <i class="pagination-item__icon fa-solid fa-arrow-right"></i>
+      </a>
+    </li>
+  </div>
+</div>

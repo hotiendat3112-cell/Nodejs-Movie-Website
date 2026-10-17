@@ -1,0 +1,55 @@
+<div class="container my-5">
+    <h2 class="text-danger mb-4">Thêm phim mới</h2>
+
+    <form action="/admin/movies/store" method="POST">
+        <div class="mb-3">
+            <label class="form-label">Tên phim</label>
+            <input
+                type="text"
+                name="title"
+                class="form-control"
+                required
+                placeholder="Nhập tên phim"
+            >
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Thể loại</label>
+            <input
+                type="text"
+                name="category"
+                class="form-control"
+                required
+                placeholder="Ví dụ: Hành động, Tình cảm"
+            >
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Ảnh poster (đường dẫn)</label>
+            <input
+                type="text"
+                name="posterUrl"
+                class="form-control"
+                placeholder="Nhập URL ảnh poster"
+            >
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Mô tả phim</label>
+            <textarea
+                name="description"
+                class="form-control"
+                rows="4"
+                placeholder="Nhập nội dung phim"
+            ></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-danger">
+            Lưu phim
+        </button>
+
+        <a href="/admin" class="btn btn-secondary">
+            Quay lại
+        </a>
+    </form>
+</div>

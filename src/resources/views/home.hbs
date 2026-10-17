@@ -1,0 +1,113 @@
+<div class="content">
+  <div class="content__banner">
+    <video controls autoplay loop muted>
+      <source src="{{banner_Movies.video_url}}" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+    <div class="content__banner-show">
+      <div class="content__banner-name">
+        <img src="{{banner_Movies.logo_url}}" alt="{{banner_Movies.name}}" />
+      </div>
+      <p class="content__banner-description">
+        {{banner_Movies.description}}
+      </p>
+      <div class="content__banner--btn" >
+        <button class="content__banner-play" >
+          <a href="/phim/{{banner_Movies.slug}}" style="text-decoration: none; color:black;"><i class="fa-solid fa-play"></i>Phát</a>
+        </button>
+        <button class="content__banner-infor">
+          <i class="fa-solid fa-circle-info"></i>Chi Tiết
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="content__main">
+    {{!-- Phim Mới Cập Nhật --}}
+    <div class="row_posters">
+      <div class="content__main-title">
+        <h3 class="content__main-title-left">Phim Mới Cập Nhật</h3>
+        <h4 class="content__main-title-right">
+          <a href="#">Xem Tất Cả</a>
+        </h4>
+      </div>
+      <div class="content__main-posters">
+        <div class="content__main-icon left">
+          <i class="fa-solid fa-chevron-left"></i>
+        </div>
+        <div class="content__main-posters-row">
+          {{#each movies}}
+          <div class="moviesposter-wrapper">
+            <a href="/phim/{{slug}}">
+              <img src="{{thumb_url}}" alt="{{name}}" />
+            </a>
+            <h3 class="moviesposter-title">{{name}}</h3>
+            <div class="moviesposter-practice">{{current_episode}}</div>
+            <div class="moviesposter-HD">{{quality}}</div>
+          </div>
+          {{/each}}
+        </div>
+        <div class="content__main-icon right">
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
+      </div>
+    </div>
+    {{!-- Phim lẻ --}}
+    <div class="row_posters">
+      <div class="content__main-title">
+        <h3 class="content__main-title-left">Phim Lẻ</h3>
+        <h4 class="content__main-title-right">
+          <a href="#">Xem Tất Cả</a>
+        </h4>
+      </div>
+      <div class="content__main-posters">
+        <div class="content__main-icon left">
+          <i class="fa-solid fa-chevron-left"></i>
+        </div>
+        <div class="content__main-posters-row">
+          {{#each odd_Movies}}
+          <div class="moviesposter-wrapper">
+            <a href="/phim/{{slug}}">
+              <img src="{{thumb_url}}" alt="{{name}}" />
+            </a>
+            <h3 class="moviesposter-title">{{name}}</h3>
+            <div class="moviesposter-practice">{{current_episode}}</div>
+            <div class="moviesposter-HD">{{quality}}</div>
+          </div>
+          {{/each}}
+        </div>
+        <div class="content__main-icon right">
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
+      </div>
+    </div>
+    {{!-- Phim bộ --}}
+    <div class="row_posters">
+      <div class="content__main-title">
+        <h3 class="content__main-title-left">Phim Bộ</h3>
+        <h4 class="content__main-title-right">
+          <a href="#">Xem Tất Cả</a>
+        </h4>
+      </div>
+      <div class="content__main-posters">
+        <div class="content__main-icon left">
+          <i class="fa-solid fa-chevron-left"></i>
+        </div>
+        <div class="content__main-posters-row">
+          {{#each seri_Movies}}
+          <div class="moviesposter-wrapper">
+            <a href="/phim/{{slug}}">
+              <img src="{{thumb_url}}" alt="{{name}}" />
+            </a>
+            <h3 class="moviesposter-title">{{name}}</h3>
+            <div class="moviesposter-practice">{{current_episode}}</div>
+            <div class="moviesposter-HD">{{quality}}</div>
+          </div>
+          {{/each}}
+        </div>
+        <div class="content__main-icon right">
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

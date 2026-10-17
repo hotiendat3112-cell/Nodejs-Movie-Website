@@ -1,0 +1,126 @@
+
+<div class="header">
+  <div class="header__left">
+    <button type="button" class="menu-bar">
+      <i class="fa fa-bars"></i>
+    </button>
+
+    <a href="/">
+      <img
+        class="header__logo"
+        src="/img/logo/logo.png"
+        alt="NETFLEX"
+      />
+    </a>
+
+    <nav class="header__directory">
+      <a href="/" class="header__directory-link active">
+        Trang chủ
+      </a>
+
+      <a href="/phim-bo" class="header__directory-link">
+        Phim Bộ
+      </a>
+
+      <a href="/phim-le" class="header__directory-link">
+        Phim Lẻ
+      </a>
+
+      <a href="/phim-moi" class="header__directory-link">
+        Phim Mới Cập Nhật
+      </a>
+
+      <div class="header__directory-link category">
+        Thể Loại
+      </div>
+    </nav>
+
+    <div class="header__directory--category">
+      <li class="header__directory-category-link">
+        <a href="/the-loai/chinh-kich">Chính Kịch</a>
+      </li>
+
+      <li class="header__directory-category-link">
+        <a href="/the-loai/hoat-hinh">Hoạt Hình</a>
+      </li>
+
+      <li class="header__directory-category-link">
+        <a href="/the-loai/khoa-hoc-vien-tuong">
+          Khoa Học Viễn Tưởng
+        </a>
+      </li>
+
+      <li class="header__directory-category-link">
+        <a href="/the-loai/kinh-di">Kinh Dị</a>
+      </li>
+
+      <li class="header__directory-category-link">
+        <a href="/the-loai/tinh-cam">Tình Cảm</a>
+      </li>
+
+      <li class="header__directory-category-link">
+        <a href="/the-loai/phim-hai">Hài</a>
+      </li>
+
+      <li class="header__directory-category-link">
+        <a href="/the-loai/phieu-luu">Phiêu Lưu</a>
+      </li>
+    </div>
+  </div>
+
+  <div class="header__right">
+    <div class="header__icon">
+      <form
+        action="/search"
+        method="GET"
+        class="header__icon-search"
+      >
+        <input
+          type="text"
+          name="keyword"
+          class="header__icon-input"
+          placeholder="Tìm Kiếm Phim Muốn Xem"
+          required
+        />
+
+        <button type="submit" class="header__icon-btn">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </form>
+
+      <a class="header__icon-bell" href="#" aria-label="Thông báo">
+        <i class="fa-regular fa-bell"></i>
+      </a>
+    </div>
+
+    <div class="header__button">
+      {{#if session.username}}
+        <div class="header__user-actions">
+          <span class="header__welcome">
+            Xin chào, {{session.username}}
+          </span>
+
+          {{#if session.isAdmin}}
+            <a href="/admin" class="header__login">
+              Quản trị
+            </a>
+          {{/if}}
+
+          <a href="/logout" class="header__register">
+            Đăng xuất
+          </a>
+        </div>
+      {{else}}
+        <div class="header__user-actions">
+          <a href="/login" class="header__login">
+            Đăng nhập
+          </a>
+
+          <a href="/register" class="header__register">
+            Đăng ký
+          </a>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+</div>
